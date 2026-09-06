@@ -77,7 +77,7 @@ The converter can be powered directly from the 12V supply available on the Fairl
 
 ![USR-DR164](images/USR-DR164_board_connection.jpg)
 
-
+![USR-DR164](images/USR-DR164_antenna_lead.jpg)
 
 ### Wiring
 
