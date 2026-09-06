@@ -73,7 +73,9 @@ The converter can be powered directly from the 12V supply available on the Fairl
 
 ![USR-DR164](images/USR-DR164.jpg)
 
-![USR-DR164](images/USR-DR164 connection.jpg)
+![USR-DR164](images/USR-DR164_connection.jpg)
+
+![USR-DR164](images/USR-DR164.jpg)
 
 
 
