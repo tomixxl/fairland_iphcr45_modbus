@@ -71,7 +71,7 @@ This solution does not require an Ethernet cable near the heat pump. The USR-DR1
 
 The converter can be powered directly from the 12V supply available on the Fairland communication connector.
 
-![USR-DR164](images/usr_dr164.jpg)
+![USR-DR164](images/USR-DR164.jpg)
 
 ### Wiring
 
