@@ -63,6 +63,94 @@ Once connected to the network, the rs485 gateway can be accessed through the bro
 The default password is empty, just press login. I changes the device IP and subnet to match my internal network. The other settings are in the screenshot below. Please refer to the manufacturer website for more details (https://www.waveshare.com/wiki/RS485_TO_ETH_(B)).
 ![image](images/rs485_to_eth_portal.jpg)
 
+## Alternative gateway - USR-DR164 WiFi to RS485
+
+As an alternative to the Waveshare RS485-to-Ethernet gateway, the **USR-DR164 WiFi to RS485 converter** has been successfully tested with this project.
+
+This solution does not require an Ethernet cable near the heat pump. The USR-DR164 connects to the local WiFi network and performs Modbus TCP to Modbus RTU protocol conversion.
+
+The converter can be powered directly from the 12V supply available on the Fairland communication connector.
+
+### Wiring
+
+The Fairland connector is connected to the USR-DR164 as follows:
+
+| Fairland | USR-DR164 |
+| --- | --- |
+| A | RX/A |
+| B | TX/B |
+| 12V+ | V+ |
+| 12V- | GND |
+
+If there is no Modbus communication, try swapping the A and B RS485 wires. RS485 A/B naming is not always consistent between manufacturers.
+
+![USR-DR164 connected to Fairland](images/usr_dr164_fairland_connection.jpg)
+
+### Serial settings
+
+Configure the serial port of the USR-DR164 as follows:
+
+| Setting | Value |
+| --- | --- |
+| Baud Rate | 9600 |
+| Data Bit | 8 |
+| Parity Bit | None |
+| Stop Bit | 1 |
+| CTS/RTS | Disable |
+| Pack Interval | 20 ms |
+| Pack Size | 1400 |
+| Com Heart | OFF |
+| ModBUS Enabled | Protocol Conversion |
+
+The important setting is:
+
+`ModBUS Enabled: Protocol Conversion`
+
+This makes the USR-DR164 convert Modbus TCP requests received over WiFi into Modbus RTU requests on the RS485 interface.
+
+![USR-DR164 serial settings](images/usr_dr164_serial_settings.png)
+
+### Network settings
+
+Configure Socket A as follows:
+
+| Setting | Value |
+| --- | --- |
+| Protocol | TCP-Server |
+| Port ID | 4196 |
+| TCP Time Out | 300 |
+| Net heart | OFF |
+| Reg Set | OFF |
+
+Socket B can remain disabled:
+
+`Protocol: NONE`
+
+![USR-DR164 network settings](images/usr_dr164_network_settings.png)
+
+Configure the device in **STA mode** and connect it to the local WiFi network.
+
+It is recommended to assign the USR-DR164 a static IP address or create a DHCP reservation in the router.
+
+Example STA configuration:
+
+![USR-DR164 WiFi STA settings](images/usr_dr164_sta_settings.png)
+
+### Home Assistant configuration
+
+Home Assistant connects to the USR-DR164 using standard Modbus TCP.
+
+Example:
+
+```yaml
+modbus:
+  - name: fairland_pool
+    type: tcp
+    host: 192.168.1.200
+    port: 4196
+    delay: 2
+    timeout: 5
+
 # Step 4 - Configure Home Assistant
 I am using the docker version of Home Assistant, but that shouldn't matter. First we need to enable modbus. This is done by first adding this line to the bottom of (the config can also be done inline, but I like to separate it) `configuration.yaml`:
 ```
